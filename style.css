@@ -1,0 +1,25 @@
+#parent_box{
+    position:relative;
+    width: 400px;
+    height: 200px;
+    background-color: #000;
+    padding: 10px;
+    margin:0;
+}
+
+.fixed_child{
+    width:50px;
+    height: 200px;
+    background-color: #FFF;
+    display: inline-block;
+    margin-left:2px;
+    margin-right: 2px;
+    padding:0;
+}
+
+.flex_child{
+    background-color: #CCC;
+    margin-left:2px;
+    margin-right: 2px;
+    padding:0;
+}
