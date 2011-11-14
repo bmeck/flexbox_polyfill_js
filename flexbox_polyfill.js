@@ -2,6 +2,7 @@ $(function() {
     var full_x, flex_x, fixed_sum = 0,
         parent, flex_children, fixed_children, num_all_children, fixed_margin_sum = 0, padding_flex_children_sum = 0;
     parent = $('#parent_box');
+    
     full_x = parent.width();
     flex_children = parent.children('.flex_child');
     fixed_children = parent.children('.fixed_child');
