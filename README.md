@@ -5,6 +5,10 @@ This was just for the fun of it on a Sunday afternoon.
 
 What this does:
 
+Version 0.2:
+Seperated out the actual flexbox logic and made it applicable to a custom parent id and custom flex/fixed children classes.
+Did a LOT of refactoring on the js
+
 Version 0.1:
 takes a div #parent_div and gives it the flexbox model. takes in fixed-width children .fixed_width and flex-width children 
 .flex_width. respects padding on #parent_div, and margin-left and margin-right on children. splits the remaining space left
