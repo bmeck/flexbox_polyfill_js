@@ -1,10 +1,10 @@
-function flexBox(parent_id, flex_class, fixed_class) {
-    var parent = $(parent_id), 
+function flexBox(data) {
+    var parent = $(data.parentId), 
         full_x = parent.width(), 
         flex_x = full_x,
         fixed_children_width_sum = 0,
-        flex_children = parent.children(flex_class), 
-        fixed_children = parent.children(fixed_class), 
+        flex_children = parent.children(data.flexClass), 
+        fixed_children = parent.children(data.fixedClass), 
         num_all_children = fixed_children.length + flex_children.length,
         padding_flex_children_sum = 0,
         margin = 0,
@@ -44,7 +44,7 @@ function flexBox(parent_id, flex_class, fixed_class) {
         elem = $(ele);
         result = parent.css('padding-' + side) || 0;
         
-        if (result != 0) return parseInt(result, 10);
+        if (result !== 0) return parseInt(result, 10);
         result = parent.css('padding') || 0;
         
         return parseInt(result, 10);
@@ -53,10 +53,10 @@ function flexBox(parent_id, flex_class, fixed_class) {
     function get_margin_of_element(ele, side) {
         var elem = $(ele);
         
-        if (side === undefined || side == null) {
-            var margin = elem.css('margin') || 0;
+        if (side === undefined || side === null) {
+          margin = elem.css('margin') || 0;
         } else {
-            var margin = elem.css('margin-' + side) || 0;
+          margin = elem.css('margin-' + side) || 0;
         }
         return parseInt(margin, 10);
     }
@@ -74,5 +74,9 @@ function flexBox(parent_id, flex_class, fixed_class) {
 }
 
 $(function(){
-   flexBox('#parent_box', '.flex_child', '.fixed_child'); 
+   flexBox({
+     'parentId' : '#parent_box',
+     'fixedClass' : '.fixed_child',
+     'flexClass' : '.flex_child'
+   }); 
 });
