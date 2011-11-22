@@ -7,9 +7,28 @@
     margin:0;
 }
 
+#parent_box_vertical{
+    position:relative;
+    width: 200px;
+    height: 400px;
+    background-color: #000;
+    padding: 10px;
+    margin:0;
+}
+
+
 .fixed_child{
     width:50px;
     height: 200px;
+    background-color: #FFF;
+    display: inline-block;
+    margin:2px;
+    padding:0;
+}
+
+.fixed_child_vertical{
+    width:200px;
+    height: 50px;
     background-color: #FFF;
     display: inline-block;
     margin-left:2px;

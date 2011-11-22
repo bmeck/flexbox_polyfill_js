@@ -1,25 +1,30 @@
 var http = require('http');
 var fs = require('fs');
+var path= require('path');
+
 http.createServer(function (request, response) {
     console.log(request.url);
-    if( request.url == '/'){
-        fs.readFile('index.html', function(error, content) {
-                response.writeHead(200, { 'Content-Type': 'text/html' });
-                response.end(content, 'utf-8');
-        });
-    } else if( request.url == '/flexbox_polyfill.js' ){
-        fs.readFile('./flexbox_polyfill.js', function(error, content) {
-                response.writeHead(200, { 'Content-Type': 'text/javascript' });
-                response.end(content, 'utf-8');
-        });
-    } else if( request.url == '/style.css'){
-        fs.readFile('./style.css', function(error, content){
-           response.writeHead(200, { 'Content-Type' : 'text/css'});
-           response.end(content, 'utf-8');
-        });
-    }
-    else {
-        response.writeHead(404);
-        response.end();
-    }
+      var filePath = '.' + request.url;
+      if (filePath == './')
+	        filePath = './index.html';
+	         
+	    var extname = path.extname(filePath);
+	    var contentType = 'text/html';
+	    switch (extname) {
+	        case '.js':
+	            contentType = 'text/javascript';
+	            break;
+	        case '.css':
+	            contentType = 'text/css';
+	            break;
+	    }
+      fs.readFile(filePath, function(error, content){
+        if(error){
+          response.writeHead(404);
+          response.end();
+        } else {
+          response.writeHead(200, {'Content-Type' : contentType});
+          response.end(content);
+        }
+      });
 }).listen(3030);
