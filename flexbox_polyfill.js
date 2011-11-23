@@ -1,5 +1,7 @@
 (function(that) {
+  
   that.flexBox = {};
+    
   that.flexBox.flexIt = function(data) {
     var parent = $(data.parentId),
         horizontal = data.directionToFlex === 'horizontal' ? true : data.directionToFlex === 'vertical' ? false : null,
@@ -57,14 +59,29 @@
       }
       console.log(parentPaddingSide, flexChildShiftSide);
     });
+    
+    function getShiftOfFlexChildN(num_of_flex) {
+    result = 0;
+    if (horizontal) {
+      side1 = "left";
+      side2 = "right";
+    }
+    else {
+      side1 = "top";
+      side2 = "bottom";
+    }      
+    for (var i = 0; i < num_of_flex; i++) {
+      result += getMargin(flexChildren[i], side1);
+      result += getMargin(flexChildren[i], side2);
+    }
+    return result;
+  }
 
     function getParentPadding(ele, side) {
       elem = $(ele);
       result = parent.css('padding-' + side) || parent.css('padding');
       return parseInt(result, 10);
     }
-    
-    that.flexBox.getParentPadding = getParentPadding;
 
     function getMargin(ele, side) {
       var elem = $(ele);
@@ -76,28 +93,12 @@
       }
       return parseInt(margin, 10);
     }
-    
-    that.flexBox.getMargin = getMargin;
-
-    function getShiftOfFlexChildN(num_of_flex) {
-      result = 0;
-      if (horizontal) {
-        side1 = "left";
-        side2 = "right";
-      }
-      else {
-        side1 = "top";
-        side2 = "bottom";
-      }
-
-      for (var i = 0; i < num_of_flex; i++) {
-        result += getMargin(flexChildren[i], side1);
-        result += getMargin(flexChildren[i], side2);
-      }
-      return result;
-    }
-    
-    that.flexBox.getShift = getShiftOfFlexChildN;
+     return {
+       flexBox : this,
+       getMargin : getMargin,
+       getParentPadding : getParentPadding,
+       getShift : getShiftOfFlexChildN
+     };
   };
   
   return that;
