@@ -1,5 +1,7 @@
 #parent_box{
     position:relative;
+    display: flexbox;
+    flexbox-direction: lr;
     width: 400px;
     height: 200px;
     background-color: #000;
@@ -9,6 +11,8 @@
 
 #parent_box_vertical{
     position:relative;
+    display: flexbox;
+    flexbox-direction: tb;
     width: 200px;
     height: 400px;
     background-color: #000;
@@ -22,6 +26,7 @@
     height: 200px;
     background-color: #FFF;
     display: inline-block;
+    position: absolute;
     margin:2px;
     padding:0;
 }
@@ -31,6 +36,7 @@
     height: 50px;
     background-color: #FFF;
     display: inline-block;
+    position: absolute;
     margin:2px;
     padding:0;
 }
@@ -39,4 +45,7 @@
     background-color: #CCC;
     margin:2px;
     padding:0;
+    width: auto;
+    height: auto;
+    display: inline-block;
 }
