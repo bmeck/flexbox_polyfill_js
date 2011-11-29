@@ -23,7 +23,7 @@
 
 .fixed_child{
     width:50px;
-    height: 200px;
+    height: 196px;
     background-color: #FFF;
     display: inline-block;
     position: absolute;
@@ -32,7 +32,7 @@
 }
 
 .fixed_child_vertical{
-    width:200px;
+    width: 196px;
     height: 50px;
     background-color: #FFF;
     display: inline-block;
@@ -45,6 +45,7 @@
     background-color: #CCC;
     margin:2px;
     padding:0;
+    position: absolute;
     width: auto;
     height: auto;
     display: inline-block;

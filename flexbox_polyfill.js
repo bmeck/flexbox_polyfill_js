@@ -118,7 +118,7 @@ function flexParent(parentCss, childCss){
   thisChild;
   flexSpace -= this.isHorizontal? (this.padding.left + this.padding.right) :
     (this.padding.top + this.padding.bottom);
-  var mainShiftStart = 0;
+  var mainShiftStart = this.isHorizontal ? this.padding.left : this.padding.top;
   for(var i = 0, max = this.children['fixed'].length; i < max; i++){
     thisChild = this.children['fixed'][i];
     mainShiftStart += this.isHorizontal ? (thisChild.margins.left + thisChild.margins.right + thisChild.width) :
@@ -146,6 +146,7 @@ function flexParent(parentCss, childCss){
   //now that we've got the widths, we need to get the coordinates for each flex child.
   var mainShift = {direction: null, amount: 0}, secondaryShift = {direction: 0, amount: 0};
   mainShift.direction = this.isHorizontal ? 'left' : 'top';
+  mainShift.amount = this.isHorizontal ? this.padding.left : this.padding.top;
   secondaryShift.direction = this.isHorizontal ? 'top' : 'left';
   secondaryShift.amount += this.isHorizontal ? this.padding.top : this.padding.left;
   //TODO: add reversal after getting the right way working
@@ -155,7 +156,7 @@ function flexParent(parentCss, childCss){
     thisChild.mainShift = { amount : mainShift.amount, direction : mainShift.direction};
     mainShift.amount += this.isHorizontal ? (thisChild.width + thisChild.margins.right) :
       (thisChild.margins.bottom + thisChild.height);
-    thisChild.secondaryShift = { amount : secondaryShift.amount, direction : secondaryShift.direction};
+    thisChild.secondaryShift = { amount : (secondaryShift.amount + (this.isHorizontal ? thisChild.margins.left : thisChild.margins.top)), direction : secondaryShift.direction};
   }
   for(var v=0, maxv= maxii; v < maxv; v++){
     thisChild = this.children['flex'][v];
@@ -163,7 +164,7 @@ function flexParent(parentCss, childCss){
     thisChild.mainShift = {direction: mainShift.direction, amount: mainShift.amount};
     mainShift.amount += this.isHorizontal ? (thisChild.margins.right + thisChild.width) : 
       (thisChild.margins.bottom + thisChild.height);
-    thisChild.secondaryShift = { direction : secondaryShift.direction, amount : secondaryShift.amount };
+    thisChild.secondaryShift = { direction : secondaryShift.direction, amount : (secondaryShift.amount + (this.isHorizontal ? thisChild.margins.left : thisChild.margins.top)) };
   }
   
   //render time!!!!!
@@ -188,12 +189,21 @@ function flexParent(parentCss, childCss){
   
   for(var viii = 0; viii < maxii; viii++){
     thisChild = this.children['flex'][viii];
-    $(thisChild.element).css({
-      'left' : thisChild.mainShift.amount,
-      'top' : thisChild.secondaryShift.amount,
-      'width' : thisChild.width,
-      'height' : thisChild.height
-    });
+    if(this.isHorizontal){
+      $(thisChild.element).css({
+        'left' : thisChild.mainShift.amount,
+        'top' : thisChild.secondaryShift.amount,
+        'width' : thisChild.width,
+        'height' : thisChild.height
+      });
+    } else {
+      $(thisChild.element).css({
+        'top' : thisChild.mainShift.amount,
+        'left' : thisChild.secondaryShift.amount,
+        'width' : thisChild.width,
+        'height' : thisChild.height
+      });
+    }
   }
   
   console.log(this);
@@ -233,8 +243,8 @@ function flexChild(config){
     this.isFlexChild = false;
   }
   
-  this.height = (heightRule === 'auto' && config.parent.isHorizontal) ? config.parent.height : this.height;
-  this.width = (widthRule === 'auto' && !config.parent.isHorizontal) ? config.parent.width : this.width;
+  this.height = (heightRule === 'auto' && config.parent.isHorizontal) ? (config.parent.height - this.margins.top - this.margins.bottom) : this.height;
+  this.width = (widthRule === 'auto' && !config.parent.isHorizontal) ? (config.parent.width - this.margins.left - this.margins.right) : this.width;
   
   function getMarginInteger(elem, side){
     return parseInt(elem.css('margin-'+side) || elem.css('margin'), 10); 
