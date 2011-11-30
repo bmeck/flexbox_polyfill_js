@@ -88,7 +88,7 @@ function flexParent(parentCss, childCss){
   
   this.children = getChildren(this);
   function getChildren(that){
-    var result = []; 
+    var result = [], index2 = 1; 
     result['flex'] = [];
     result['fixed'] = []; 
     that.element.children().each(function(index, element){
@@ -96,13 +96,15 @@ function flexParent(parentCss, childCss){
       var newFlexChild = new flexChild({
         element : element,
         parent : that,
-        cssRule : childCss[element.attr('class')]
+        cssRule : childCss[element.attr('class')],
+        orderNumber : index2
       });
       if(newFlexChild.isFlexChild){
         result['flex'].push(newFlexChild);
       } else{
         result['fixed'].push(newFlexChild);
       }
+      index2++;
     });
     return result;
   }
@@ -141,15 +143,21 @@ function flexParent(parentCss, childCss){
     }
   }
   
-  //now that we've got the widths, we need to get the coordinates for each flex child.
+  //now that we've got the widths, we need to get the coordinates for each child.
   var mainShift = {direction: null, amount: 0}, secondaryShift = {direction: 0, amount: 0};
   mainShift.direction = this.isHorizontal ? 'left' : 'top';
   mainShift.amount = this.isHorizontal ? this.padding.left : this.padding.top;
   secondaryShift.direction = this.isHorizontal ? 'top' : 'left';
   secondaryShift.amount += this.isHorizontal ? this.padding.top : this.padding.left;
   //TODO: add reversal after getting the right way working
-  for(var vi = 0; vi < max; vi++){
-    thisChild = this.children['fixed'][vi];
+  var all_children = $.merge(this.children['fixed'], this.children['flex']);
+  //order the chidlren marged array by order number
+  all_children.sort(function(a, b){
+    return (a.orderNumber - b.orderNumber);
+  });
+  console.dir(all_children);
+  for(var vi = 0, maxvi = all_children.length; vi < maxvi; vi++){
+    thisChild = all_children[vi];
     mainShift.amount += this.isHorizontal ? thisChild.margins.left : thisChild.margins.top;
     thisChild.mainShift = { amount : mainShift.amount, direction : mainShift.direction};
     mainShift.amount += this.isHorizontal ? (thisChild.width + thisChild.margins.right) :
@@ -157,20 +165,6 @@ function flexParent(parentCss, childCss){
       console.log(secondaryShift.amount);
     thisChild.secondaryShift = { amount : secondaryShift.amount, 
         direction : secondaryShift.direction};
-  }
-  for(var v=0, maxv= maxii; v < maxv; v++){
-    thisChild = this.children['flex'][v];
-    mainShift.amount += this.isHorizontal ? thisChild.margins.left : thisChild.margins.top;
-    thisChild.mainShift = {direction: mainShift.direction, amount: mainShift.amount};
-    mainShift.amount += this.isHorizontal ? (thisChild.margins.right + thisChild.width) : 
-      (thisChild.margins.bottom + thisChild.height);
-      console.log(secondaryShift.amount);
-    thisChild.secondaryShift = { direction : secondaryShift.direction, amount : secondaryShift.amount };
-  }
-  
-  //render time!!!!!
-  for(var vii = 0; vii < max; vii++){
-    thisChild = this.children['fixed'][vii];
     if(this.isHorizontal){
       $(thisChild.element).css({
         'left' : thisChild.mainShift.amount,
@@ -187,26 +181,7 @@ function flexParent(parentCss, childCss){
       });
     }
   }
-  
-  for(var viii = 0; viii < maxii; viii++){
-    thisChild = this.children['flex'][viii];
-    if(this.isHorizontal){
-      $(thisChild.element).css({
-        'left' : thisChild.mainShift.amount,
-        'top' : thisChild.secondaryShift.amount,
-        'width' : thisChild.width,
-        'height' : thisChild.height
-      });
-    } else {
-      $(thisChild.element).css({
-        'top' : thisChild.mainShift.amount,
-        'left' : thisChild.secondaryShift.amount,
-        'width' : thisChild.width,
-        'height' : thisChild.height
-      });
-    }
-  }
-  
+
   console.log(this);
 }
 
@@ -225,7 +200,7 @@ function flexChild(config){
     left: getMarginInteger(this.element, "left"),
     right: getMarginInteger(this.element, "right")
   };
-  
+  this.orderNumber = config.orderNumber;
   this.isFlexChild = true;
   for(var i = 0, max = config.cssRule.declarations.length; i < max; i++){
     var rule = config.cssRule.declarations[i];
