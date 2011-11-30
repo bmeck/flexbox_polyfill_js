@@ -9,10 +9,32 @@
     margin:0;
 }
 
+#parent_box_reversed{
+    position:relative;
+    display: flexbox;
+    flexbox-direction: rl;
+    width: 400px;
+    height: 200px;
+    background-color: #000;
+    padding: 10px;
+    margin:0;
+}
+
 #parent_box_vertical{
     position:relative;
     display: flexbox;
     flexbox-direction: tb;
+    width: 200px;
+    height: 400px;
+    background-color: #000;
+    padding: 10px;
+    margin:0;
+}
+
+#parent_box_vertical_reversed{
+    position:relative;
+    display: flexbox;
+    flexbox-direction: bt;
     width: 200px;
     height: 400px;
     background-color: #000;

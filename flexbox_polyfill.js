@@ -152,9 +152,15 @@ function flexParent(parentCss, childCss){
   //TODO: add reversal after getting the right way working
   var all_children = $.merge(this.children['fixed'], this.children['flex']);
   //order the chidlren marged array by order number
-  all_children.sort(function(a, b){
-    return (a.orderNumber - b.orderNumber);
-  });
+  if(!this.reversed){
+    all_children.sort(function(a, b){
+      return (a.orderNumber - b.orderNumber);
+    });
+  } else {
+    all_children.sort(function(a, b){
+      return (b.orderNumber - a.orderNumber);
+    });
+  }
   console.dir(all_children);
   for(var vi = 0, maxvi = all_children.length; vi < maxvi; vi++){
     thisChild = all_children[vi];
