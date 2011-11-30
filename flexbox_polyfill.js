@@ -116,8 +116,6 @@ function flexParent(parentCss, childCss){
 
   var flexSpace = this.isHorizontal ? this.width : this.height,
   thisChild;
-  flexSpace -= this.isHorizontal? (this.padding.left + this.padding.right) :
-    (this.padding.top + this.padding.bottom);
   var mainShiftStart = this.isHorizontal ? this.padding.left : this.padding.top;
   for(var i = 0, max = this.children['fixed'].length; i < max; i++){
     thisChild = this.children['fixed'][i];
@@ -127,8 +125,8 @@ function flexParent(parentCss, childCss){
   flexSpace -= mainShiftStart;
   for(var ii = 0, maxii = this.children['flex'].length; ii < maxii; ii++){
     thisChild = this.children['flex'][ii];
-    flexSpace -= this.isHorizontal ? (thisChild.margins.left + thisChild.margins.right) :
-      (thisChild.margins.top + thisChild.margins.bottom);
+    flexSpace -= this.isHorizontal ? (thisChild.margins.left) :
+      (thisChild.margins.top);
   }
   console.log('flexspace total: ', flexSpace);
   flexSpace = Math.floor(flexSpace/this.children['flex'].length);
@@ -156,7 +154,9 @@ function flexParent(parentCss, childCss){
     thisChild.mainShift = { amount : mainShift.amount, direction : mainShift.direction};
     mainShift.amount += this.isHorizontal ? (thisChild.width + thisChild.margins.right) :
       (thisChild.margins.bottom + thisChild.height);
-    thisChild.secondaryShift = { amount : (secondaryShift.amount + (this.isHorizontal ? thisChild.margins.left : thisChild.margins.top)), direction : secondaryShift.direction};
+      console.log(secondaryShift.amount);
+    thisChild.secondaryShift = { amount : secondaryShift.amount, 
+        direction : secondaryShift.direction};
   }
   for(var v=0, maxv= maxii; v < maxv; v++){
     thisChild = this.children['flex'][v];
@@ -164,7 +164,8 @@ function flexParent(parentCss, childCss){
     thisChild.mainShift = {direction: mainShift.direction, amount: mainShift.amount};
     mainShift.amount += this.isHorizontal ? (thisChild.margins.right + thisChild.width) : 
       (thisChild.margins.bottom + thisChild.height);
-    thisChild.secondaryShift = { direction : secondaryShift.direction, amount : (secondaryShift.amount + (this.isHorizontal ? thisChild.margins.left : thisChild.margins.top)) };
+      console.log(secondaryShift.amount);
+    thisChild.secondaryShift = { direction : secondaryShift.direction, amount : secondaryShift.amount };
   }
   
   //render time!!!!!
