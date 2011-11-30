@@ -5,7 +5,7 @@ This was just for the fun of it on a Sunday afternoon.
 
 What this does:
 
-Version 2.0.3 (11/30/11):
+Version 0.2.3 (11/30/11):
 Redid the entire logic setup to objects, ect. It now looks right in vertical and horizontal, and orders children in the same order they are placed on the DOM.
 
 Version 0.2:
